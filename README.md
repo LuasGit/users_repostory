@@ -1,5 +1,5 @@
 
-```markdown
+markdown
 # 🎬 CINENOVA – Sistema de Venta de Boletos
 
 Plataforma integral para la gestión de cines, desarrollada con una arquitectura desacoplada: **Backend en FastAPI** y **Frontend en Next.js**.
