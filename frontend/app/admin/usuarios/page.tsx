@@ -80,7 +80,7 @@ export default function GestionUsuariosPage() {
     nombre: "",
     apellido: "",
     correo: "",
-    rol: "empleado" as UserRole, // Por defecto empleado para evitar crear admins por error
+    rol: "empleado" as UserRole, 
     password: "",
   });
 

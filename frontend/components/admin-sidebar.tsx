@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation" // <-- Agregado useRouter
+import Cookies from "js-cookie" // <-- Agregada la importación de js-cookie
 import { 
   Users, 
   Film, 
@@ -54,6 +55,16 @@ const menuItems = [
 
 export function AdminSidebar({ children }: AdminSidebarProps) {
   const pathname = usePathname()
+  const router = useRouter() // <-- Inicializado el router
+
+  const handleLogout = () => {
+    // 1. Destruimos la sesión local
+    Cookies.remove("access_token")
+    Cookies.remove("user_role")
+    
+    // 2. Redirigimos al login manualmente
+    router.push("/login")
+  }
 
   return (
     <div className="flex min-h-screen bg-[#020617]">
@@ -93,13 +104,14 @@ export function AdminSidebar({ children }: AdminSidebarProps) {
 
         {/* Logout */}
         <div className="p-4 border-t border-[#374151]/30">
-          <Link
-            href="/login"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[#9CA3AF] hover:bg-[#1F2937] hover:text-[#DC2626] transition-all"
+          {/* Cambiado <Link> por <button> */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[#9CA3AF] hover:bg-[#1F2937] hover:text-[#DC2626] transition-all"
           >
             <LogOut size={20} />
             <span>Cerrar Sesión</span>
-          </Link>
+          </button>
         </div>
       </aside>
 

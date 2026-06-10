@@ -41,7 +41,7 @@ class ClienteCreate(UsuarioBase):
     contrasena: str = Field(..., description="Contraseña fuerte requerida")
     confirmar_contrasena: str
 
-    # Aplicamos el validador a la contraseña
+
     @field_validator("contrasena")
     @classmethod
     def validar_fuerza(cls, v: str) -> str:

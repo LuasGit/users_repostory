@@ -72,7 +72,7 @@ export default function ClienteWelcomePage() {
         <div className="mb-12">
           <h1 className="text-4xl font-bold text-[#F9FAFB] mb-2">
             {/* 6. Reemplazar aquí también */}
-            ¡Bienvenido a CINENOVA, {user.nombre}!
+            ¡Bienvenido a CINENOVA CLIENTE, {user.nombre}!
           </h1>
           <p className="text-[#9CA3AF] text-lg">
             Descubre las mejores películas y reserva tus boletos

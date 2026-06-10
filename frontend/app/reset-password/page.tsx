@@ -11,6 +11,30 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { authService } from "@/services/authService"
 
+// ── Funciones Helper para medir la fuerza de la contraseña ──
+const checkPasswordStrength = (pass: string) => {
+  let score = 0;
+  if (!pass) return score;
+  if (pass.length >= 8) score += 1;
+  if (/[A-Z]/.test(pass)) score += 1;
+  if (/[a-z]/.test(pass)) score += 1;
+  if (/\d/.test(pass)) score += 1;
+  if (/[!@#$%^&*(),.?":{}|<>]/.test(pass)) score += 1;
+  return score;
+};
+
+const getStrengthDetails = (score: number) => {
+  switch (score) {
+    case 0: return { label: "", color: "bg-transparent", width: "w-0" };
+    case 1:
+    case 2: return { label: "Débil", color: "bg-[#DC2626]", width: "w-1/4" }; // Rojo
+    case 3: return { label: "Regular", color: "bg-[#FBBF24]", width: "w-2/4" }; // Amarillo
+    case 4: return { label: "Buena", color: "bg-[#34D399]", width: "w-3/4" }; // Verde claro
+    case 5: return { label: "Fuerte", color: "bg-[#10B981]", width: "w-full" }; // Verde oscuro
+    default: return { label: "", color: "bg-transparent", width: "w-0" };
+  }
+};
+
 // Subcomponente que maneja la lógica y captura el parámetro de la URL
 function ResetPasswordForm() {
   const searchParams = useSearchParams()
@@ -45,10 +69,13 @@ function ResetPasswordForm() {
     e.preventDefault()
     setError("")
 
-    if (nuevaContrasena.length < 8) {
-      setError("La contraseña debe tener al menos 8 caracteres.")
+    // Validación de fuerza antes de enviar
+    const strength = checkPasswordStrength(nuevaContrasena)
+    if (strength < 5) {
+      setError("La contraseña debe tener 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial.")
       return
     }
+
     if (nuevaContrasena !== confirmarContrasena) {
       setError("Las contraseñas no coinciden.")
       return
@@ -130,6 +157,22 @@ function ResetPasswordForm() {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
+
+          {/* MEDIDOR DE FUERZA DE CONTRASEÑA */}
+          {nuevaContrasena.length > 0 && (
+            <div className="mt-2 space-y-1">
+              <div className="h-1.5 w-full bg-[#374151] rounded-full overflow-hidden flex">
+                <div 
+                  className={`h-full transition-all duration-300 ${getStrengthDetails(checkPasswordStrength(nuevaContrasena)).color} ${getStrengthDetails(checkPasswordStrength(nuevaContrasena)).width}`}
+                ></div>
+              </div>
+              <p className="text-xs text-[#9CA3AF] text-right">
+                Seguridad: <span className="font-semibold" style={{ color: getStrengthDetails(checkPasswordStrength(nuevaContrasena)).color.replace('bg-[', '').replace(']', '').replace('bg-transparent', '#9CA3AF') }}>
+                  {getStrengthDetails(checkPasswordStrength(nuevaContrasena)).label}
+                </span>
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="space-y-2">

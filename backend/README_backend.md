@@ -1,6 +1,5 @@
 # 🎬 CINENOVA – Módulo de Gestión de Usuarios y Autenticación
 
-API REST construida con **FastAPI + PostgreSQL + SQLAlchemy + JWT**.
 
 ---
 
